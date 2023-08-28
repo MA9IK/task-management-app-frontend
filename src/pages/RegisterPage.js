@@ -1,5 +1,5 @@
 import { Col, Button, Row, Container, Card, Form } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 export default function RegisterPage() {
@@ -7,11 +7,29 @@ export default function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPass, setRepeatPass] = useState('');
+  const navigate = useNavigate();
 
-  const register = (event) => {
-    event.preventDefault()
-    console.log('registered')
-  }
+  const register = async (event) => {
+    event.preventDefault();
+    console.log('registered');
+    const response = await fetch('http://localhost:4000/register', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        username: username,
+        email: email,
+        password: password,
+        repeatPass: repeatPass
+      })
+    });
+
+    if (response.status == 200) {
+      navigate('/')
+    }
+  };
 
   return (
     <>

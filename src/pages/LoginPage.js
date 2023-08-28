@@ -1,16 +1,32 @@
 import { Col, Button, Row, Container, Card, Form } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  const login = (event) => {
-    event.preventDefault()
-    console.log('login')
-  }
+  const login = async (event) => {
+    event.preventDefault();
+    console.log('login');
+    const response = await fetch('http://localhost:4000/login', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password
+      })
+    });
+
+    if (response.status == 200) {
+      navigate('/')
+    }
+  };
 
   return (
     <>
