@@ -1,90 +1,122 @@
 import { Col, Button, Row, Container, Card, Form } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-
+import React, { useState } from 'react';
+import { Formik, Field, ErrorMessage } from 'formik';
+import * as yup from 'yup';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [remember, setRemember] = useState(false);
   const navigate = useNavigate();
 
-  const login = async (event) => {
-    event.preventDefault();
-    console.log('login');
-    const response = await fetch('http://localhost:4000/login', {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password
-      })
-    });
+  const login = async (values) => {
+    try {
+      console.log(values)
+      const response = await fetch('http://localhost:4000/login', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: values.email,
+          password: values.password,
+          remember: remember
+        })
+      });
 
-    if (response.status == 200) {
-      navigate('/')
+      if (response.status === 200) {
+        navigate('/');
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
+  const initialValues = {
+    email: '',
+    password: ''
+  };
+
+  const schema = yup.object().shape({
+    email: yup.string().required('Email is required').email('Invalid email format'),
+    password: yup.string().required('Password is required').min(6, 'Password must be at least 6 characters')
+  });
+
   return (
-    <>
-      <Container>
-        <Container>
-          <Row className='vh-100 d-flex justify-content-center align-items-center'>
-            <Col md={8} lg={6} xs={12}>
-              <div className='border border-2 border-primary'></div>
-              <Card className='shadow px-4'>
-                <Card.Body>
-                  <div>
-                    <h2 className='fw-bold mb-2 text-center text-uppercase'>Login</h2>
-                    <div className='mb-3'>
-                      <Form>
-                        <Form.Group className='mb-3' controlId='formBasicEmail'>
-                          <Form.Label className='text-center'>
-                            Email address
-                          </Form.Label>
-                          <Form.Control
-                            type='email'
-                            placeholder='Enter email'
-                            value={email || ''}
-                            onChange={(event) => setEmail(event.target.value)}
+    <Container>
+      <Row className='vh-100 d-flex justify-content-center align-items-center'>
+        <Col md={8} lg={6} xs={12}>
+          <div className='border border-2 border-primary'></div>
+          <Card className='shadow px-4'>
+            <Card.Body>
+              <div>
+                <h2 className='fw-bold mb-2 text-center text-uppercase'>Login</h2>
+                <div className='mb-3'>
+                  <Formik
+                    initialValues={initialValues}
+                    onSubmit={values => login(values)}
+                    validationSchema={schema}
+                  >
+                    {(formik) => (
+                      <Form noValidate onSubmit={formik.handleSubmit}>
+                        <Form.Group className='mb-3' controlId='email'>
+                          <Form.Label className='text-center'>Email address</Form.Label>
+                          <Field
+                            type='text'
+                            name='email'
+                            className={`form-control ${
+                              formik.touched.email && formik.errors.email ? 'is-invalid' : ''
+                            }`}
+                            placeholder='Email'
+                          />
+                          <ErrorMessage
+                            name='email'
+                            component='div'
+                            className='invalid-feedback'
                           />
                         </Form.Group>
-
-                        <Form.Group
-                          className='mb-3'
-                          controlId='formBasicPassword'
-                        >
-                          <Form.Label>Password</Form.Label>
-                          <Form.Control
-                            type='password'
+                        <Form.Group className='mb-3' controlId='password'>
+                          <Form.Label className='text-center'>Password</Form.Label>
+                          <Field
+                            type='text'
+                            name='password'
+                            className={`form-control ${
+                              formik.touched.password && formik.errors.password ? 'is-invalid' : ''
+                            }`}
                             placeholder='Password'
-                            value={password || ''}
-                            onChange={(event) => setPassword(event.target.value)}
+                          />
+                          <ErrorMessage
+                            name='password'
+                            component='div'
+                            className='invalid-feedback'
                           />
                         </Form.Group>
                         <div className='d-grid'>
-                          <Button variant='primary' type='submit' onClick={(event) => login(event)}>
+                          <Button variant='primary' type='submit'>
                             Create Account
                           </Button>
                         </div>
+                        <Form.Check
+                          className='d-flex gap-1 align-items-center mt-1'
+                          type={'checkbox'}
+                          label={`remember me for 2 weeks`}
+                          onChange={() => setRemember(!remember)}
+                        />
                       </Form>
-                      <div className='mt-3'>
-                        <p className='mb-0  text-center'>
-                          Don't have an account?{' '}
-                          <Link to={'/register'}>Register</Link>
-                        </p>
-                      </div>
-                    </div>
+                    )}
+                  </Formik>
+                  <div className='mt-3'>
+                    <p className='mb-0  text-center'>
+                      Don't have an account?{' '}
+                      <Link to={'/register'}>Register</Link>
+                    </p>
                   </div>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </Container>
-    </>
+                </div>
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 }

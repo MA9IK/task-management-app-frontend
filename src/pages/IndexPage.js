@@ -27,7 +27,9 @@ export default function IndexPage() {
         } else {
           navigate('/register')
         }
-      })
+      }).catch(err => {
+      console.log(err)
+    })
   }, []);
 
 
