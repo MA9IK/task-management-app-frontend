@@ -10,7 +10,6 @@ export default function LoginPage() {
 
   const login = async (values) => {
     try {
-      console.log(values)
       const response = await fetch('http://localhost:4000/login', {
         method: 'POST',
         credentials: 'include',
@@ -78,7 +77,7 @@ export default function LoginPage() {
                         <Form.Group className='mb-3' controlId='password'>
                           <Form.Label className='text-center'>Password</Form.Label>
                           <Field
-                            type='text'
+                            type='password'
                             name='password'
                             className={`form-control ${
                               formik.touched.password && formik.errors.password ? 'is-invalid' : ''
