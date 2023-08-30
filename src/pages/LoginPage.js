@@ -32,7 +32,7 @@ export default function LoginPage() {
   };
 
   useEffect(() => {
-    fetch('http://localhost:4000/', { credentials: 'include' })
+    fetch('http://localhost:4000/profile', { credentials: 'include' })
       .then(data => data.json())
       .then(data => {
         if (data.auth === true) {

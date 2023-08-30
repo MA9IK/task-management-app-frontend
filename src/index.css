@@ -15,3 +15,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.task {
+  transition: all 1s ease-in-out;
+}
+
+.task:hover {
+  cursor: pointer;
+  background: #ccc;
+}

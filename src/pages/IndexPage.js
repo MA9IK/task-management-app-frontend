@@ -1,18 +1,22 @@
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Alert, Container, Figure, Nav } from 'react-bootstrap';
+import { Button, Col, Container, Row } from 'react-bootstrap';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import { UserContext } from '../UserContext';
 import Header from '../components/Header';
+import Task from '../components/Task';
+import { ModalWindow } from '../components/Modal';
 
 export default function IndexPage() {
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext);
+  const [modalShow, setModalShow] = useState(false);
+  const [task, setTask] = useState([]);
   const [showNotification, setShowNotification] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:4000/', { credentials: 'include' })
+    fetch('http://localhost:4000/profile', { credentials: 'include' })
       .then(data => data.json())
       .then(data => {
         if (data.auth === true) {
@@ -24,8 +28,16 @@ export default function IndexPage() {
       }).catch(err => {
       console.log(err);
     });
-  }, [navigate]);
 
+    fetch('http://localhost:4000/task', { credentials: 'include' })
+      .then(data => data.json())
+      .then(data => {
+        setTask(data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, [navigate]);
 
   return (
     <Container>
@@ -41,6 +53,47 @@ export default function IndexPage() {
         </ToastContainer>
       )}
       <Header />
+      <Button variant='success' className='mt-1' onClick={() => setModalShow(true)}>Create task</Button>
+
+      <ModalWindow
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        head='Create task'
+      />
+
+      {task.length > 0 ? (
+        <Row className='mt-5 text-center'>
+          <Col>
+            <div>To-do</div>
+            {task
+              .filter(item => item.status === 'to-do')
+              .map((item, index) => {
+                return <Task id={item._id} status={item.status} text={item.title} desc={item.detail} key={index} />;
+              })
+            }
+          </Col>
+          <Col>
+            <div>In-progress</div>
+            {task
+              .filter(item => item.status === 'in-progress')
+              .map((item, index) => {
+                return <Task id={item._id} status={item.status} text={item.title} desc={item.detail} key={index} />;
+              })
+            }
+          </Col>
+          <Col>
+            <div>Completed</div>
+            {task
+              .filter(item => item.status === 'completed')
+              .map((item, index) => {
+                return <Task id={item._id} status={item.status} text={item.title} desc={item.detail} key={index} />;
+              })
+            }
+          </Col>
+        </Row>
+      ) : (
+        <div>There no task</div>
+      )}
     </Container>
   );
 }
