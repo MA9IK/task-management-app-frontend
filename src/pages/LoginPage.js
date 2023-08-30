@@ -1,6 +1,6 @@
 import { Col, Button, Row, Container, Card, Form } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 
@@ -30,6 +30,21 @@ export default function LoginPage() {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    fetch('http://localhost:4000/', { credentials: 'include' })
+      .then(data => data.json())
+      .then(data => {
+        if (data.auth === true) {
+          navigate('/');
+        } else {
+          navigate('/login');
+        }
+      }).catch(err => {
+      console.log(err);
+    });
+  }, [navigate]);
+
 
   const initialValues = {
     email: '',

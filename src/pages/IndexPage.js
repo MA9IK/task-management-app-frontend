@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Alert, Container, Figure, Nav } from 'react-bootstrap';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
+import { UserContext } from '../UserContext';
+import Header from '../components/Header';
 
 export default function IndexPage() {
   const navigate = useNavigate();
-  const [user, setUser] = useState('');
+  const { user, setUser } = useContext(UserContext);
   const [showNotification, setShowNotification] = useState(true);
 
   useEffect(() => {
@@ -24,17 +26,6 @@ export default function IndexPage() {
     });
   }, [navigate]);
 
-  const logout = () => {
-    fetch('http://localhost:4000/logout', {
-      method: 'POST',
-      credentials: 'include'
-    }).then(() => {
-      navigate('/register')
-    })
-      .catch(err => {
-        console.log(err)
-      })
-  };
 
   return (
     <Container>
@@ -49,22 +40,7 @@ export default function IndexPage() {
           </Toast>
         </ToastContainer>
       )}
-      <header className='d-flex justify-content-between'>
-        <Figure className='m-0 mt-1'>
-          <Figure.Image
-            className='rounded-5 m-0'
-            width={50}
-            height={50}
-            alt='logo'
-            src='https://avatars.githubusercontent.com/u/119162718?v=4'
-          />
-        </Figure>
-        <Nav>
-          <Nav.Item>
-            <Nav.Link onClick={logout}>Logout</Nav.Link>
-          </Nav.Item>
-        </Nav>
-      </header>
+      <Header />
     </Container>
   );
 }

@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Col, Button, Row, Container, Card, Form, Alert } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 
 const schema = yup.object().shape({
-  username: yup.string().required('Username is required').min(3, 'Username must be at least 3 characters'),
+  username: yup.string().required('Username is required').min(3, 'Username must be at least 3 characters').max(15, 'Username cannot be most than 15 characters'),
   email: yup.string().required('Email is required').email('Invalid email format'),
   password: yup.string().required('Password is required').min(6, 'Password must be at least 6 characters'),
   repeatPass: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match')
@@ -46,6 +46,21 @@ export default function RegisterPage() {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    fetch('http://localhost:4000/', { credentials: 'include' })
+      .then(data => data.json())
+      .then(data => {
+        if (data.auth === true) {
+          navigate('/');
+        } else {
+          navigate('/register');
+        }
+      }).catch(err => {
+      console.log(err);
+    });
+  }, [navigate]);
+
 
   return (
     <Container>
