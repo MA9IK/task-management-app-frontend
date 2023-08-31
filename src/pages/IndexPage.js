@@ -1,24 +1,29 @@
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Col, Container, Row } from 'react-bootstrap';
+import { Alert, Button, Col, Container, Row } from 'react-bootstrap';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import { UserContext } from '../UserContext';
 import Header from '../components/Header';
 import Task from '../components/Task';
 import { ModalWindow } from '../components/Modal';
+import Spinner from 'react-bootstrap/Spinner';
 
 export default function IndexPage() {
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext);
   const [modalShow, setModalShow] = useState(false);
   const [task, setTask] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [showNotification, setShowNotification] = useState(true);
 
+
   useEffect(() => {
+    setLoading(true);
     fetch('http://localhost:4000/profile', { credentials: 'include' })
       .then(data => data.json())
       .then(data => {
+        setLoading(false);
         if (data.auth === true) {
           navigate('/');
           setUser(data.decoded.user);
@@ -32,6 +37,7 @@ export default function IndexPage() {
     fetch('http://localhost:4000/task', { credentials: 'include' })
       .then(data => data.json())
       .then(data => {
+        setLoading(false);
         setTask(data);
       })
       .catch(err => {
@@ -61,39 +67,46 @@ export default function IndexPage() {
         head='Create task'
       />
 
-      {task.length > 0 ? (
-        <Row className='mt-5 text-center'>
-          <Col>
-            <div>To-do</div>
-            {task
-              .filter(item => item.status === 'to-do')
-              .map((item, index) => {
-                return <Task id={item._id} status={item.status} text={item.title} desc={item.detail} key={index} />;
-              })
-            }
-          </Col>
-          <Col>
-            <div>In-progress</div>
-            {task
-              .filter(item => item.status === 'in-progress')
-              .map((item, index) => {
-                return <Task id={item._id} status={item.status} text={item.title} desc={item.detail} key={index} />;
-              })
-            }
-          </Col>
-          <Col>
-            <div>Completed</div>
-            {task
-              .filter(item => item.status === 'completed')
-              .map((item, index) => {
-                return <Task id={item._id} status={item.status} text={item.title} desc={item.detail} key={index} />;
-              })
-            }
-          </Col>
-        </Row>
+      {loading ? (
+        <Spinner animation='border' role='status' className='d-flex'>
+          <span className='visually-hidden'>Loading...</span>
+        </Spinner>
       ) : (
-        <div>There no task</div>
+        task.length > 0 ? (
+          <Row className='mt-5 text-center'>
+            <Col>
+              <div>To-do</div>
+              {task
+                .filter(item => item.status === 'to-do')
+                .map((item, index) => {
+                  return <Task id={item._id} status={item.status} text={item.title} desc={item.detail} key={index} />;
+                })
+              }
+            </Col>
+            <Col>
+              <div>In-progress</div>
+              {task
+                .filter(item => item.status === 'in-progress')
+                .map((item, index) => {
+                  return <Task id={item._id} status={item.status} text={item.title} desc={item.detail} key={index} />;
+                })
+              }
+            </Col>
+            <Col>
+              <div>Completed</div>
+              {task
+                .filter(item => item.status === 'completed')
+                .map((item, index) => {
+                  return <Task id={item._id} status={item.status} text={item.title} desc={item.detail} key={index} />;
+                })
+              }
+            </Col>
+          </Row>
+        ) : (
+          <div className='font-monospace fs-2 text-center'>There are no task</div>
+        )
       )}
+
     </Container>
   );
 }
