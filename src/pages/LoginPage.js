@@ -32,7 +32,7 @@ export default function LoginPage() {
   };
 
   useEffect(() => {
-    fetch('https://task-management-app-frontend.vercel.app/profile', { credentials: 'include' })
+    fetch('https://test-w6wx.onrender.com/profile', { credentials: 'include' })
       .then(data => data.json())
       .then(data => {
         if (data.auth === true) {
