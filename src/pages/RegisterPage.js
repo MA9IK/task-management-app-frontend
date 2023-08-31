@@ -24,7 +24,7 @@ export default function RegisterPage() {
 
   const register = async (values) => {
     try {
-      const response = await fetch('https://test-w6wx.onrender.com/register', {
+      const response = await fetch('https://task-management-app-frontend.vercel.app/register', {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -48,7 +48,7 @@ export default function RegisterPage() {
   };
 
   useEffect(() => {
-    fetch('https://test-w6wx.onrender.com/profile', { credentials: 'include' })
+    fetch('https://task-management-app-frontend.vercel.app/profile', { credentials: 'include' })
       .then(data => data.json())
       .then(data => {
         if (data.auth === true) {

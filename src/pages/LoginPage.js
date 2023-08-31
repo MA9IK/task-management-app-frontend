@@ -10,7 +10,7 @@ export default function LoginPage() {
 
   const login = async (values) => {
     try {
-      const response = await fetch('https://test-w6wx.onrender.com/login', {
+      const response = await fetch('https://task-management-app-frontend.vercel.app/login', {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -32,7 +32,7 @@ export default function LoginPage() {
   };
 
   useEffect(() => {
-    fetch('https://test-w6wx.onrender.com/profile', { credentials: 'include' })
+    fetch('https://task-management-app-frontend.vercel.app/profile', { credentials: 'include' })
       .then(data => data.json())
       .then(data => {
         if (data.auth === true) {

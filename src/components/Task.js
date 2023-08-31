@@ -17,7 +17,7 @@ export default function Task({ text, desc, id, status }) {
 
   const removeTask = async () => {
     try {
-      const response = await fetch(`https://test-w6wx.onrender.com/task/${id}`, {
+      const response = await fetch(`https://task-management-app-frontend.vercel.app/task/${id}`, {
         method: 'DELETE',
         credentials: 'include'
       });
@@ -33,16 +33,15 @@ export default function Task({ text, desc, id, status }) {
       console.error('Error:', error);
     }
   };
-
   const updateTask = async () => {
     try {
-      const response = await fetch(`https://test-w6wx.onrender.com/task/${id}`, {
+      const response = await fetch(`https://task-management-app-frontend.vercel.app/task/${id}`, {
         method: 'PATCH',
         credentials: 'include',
         body: JSON.stringify({
           title: newText,
           detail: newDesc,
-          status: status
+          status: newStatus
         }),
         headers: {
           'Content-Type': 'application/json'
@@ -98,11 +97,10 @@ export default function Task({ text, desc, id, status }) {
             }}
           />
           <DropdownButton id='dropdown-basic-button' title={newStatus || 'Choose status'} className='mt-2'>
-            <Dropdown.Item onClick={(e) => setNewStatus(e.target.innerText)}>to-do</Dropdown.Item>
-            <Dropdown.Item onClick={(e) => setNewStatus(e.target.innerText)}>in-progress</Dropdown.Item>
-            <Dropdown.Item onClick={(e) => setNewStatus(e.target.innerText)}>completed</Dropdown.Item>
+            <Dropdown.Item onClick={(e) => setNewStatus('to-do')}>to-do</Dropdown.Item>
+            <Dropdown.Item onClick={(e) => setNewStatus('in-progress')}>in-progress</Dropdown.Item>
+            <Dropdown.Item onClick={(e) => setNewStatus('completed')}>completed</Dropdown.Item>
           </DropdownButton>
-
           <Button variant='success' className='mt-3' onClick={updateTask}>
             Submit
           </Button>

@@ -20,7 +20,7 @@ export default function IndexPage() {
 
   useEffect(() => {
     setLoading(true);
-    fetch('https://test-w6wx.onrender.com/profile', { credentials: 'include' })
+    fetch('https://task-management-app-frontend.vercel.app/profile', { credentials: 'include' })
       .then(data => data.json())
       .then(data => {
         setLoading(false);
@@ -34,7 +34,7 @@ export default function IndexPage() {
       console.log(err);
     });
 
-    fetch('https://test-w6wx.onrender.com/task', { credentials: 'include' })
+    fetch('https://task-management-app-frontend.vercel.app/task', { credentials: 'include' })
       .then(data => data.json())
       .then(data => {
         setLoading(false);
