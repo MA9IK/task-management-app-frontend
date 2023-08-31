@@ -8,7 +8,7 @@ export default function Header() {
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const logout = async () => {
-    const response = await fetch('http://localhost:4000/logout', {
+    const response = await fetch('https://test-w6wx.onrender.com/logout', {
       method: 'POST',
       credentials: 'include'
     });
