@@ -12,7 +12,7 @@ export const ModalWindow = ({ show, onHide, head }) => {
 
   const createTask = async () => {
     try {
-      const response = await fetch('http://localhost:4000/task', {
+      const response = await fetch('https://test-w6wx.onrender.com/task', {
         credentials: 'include',
         method: 'POST',
         headers: {

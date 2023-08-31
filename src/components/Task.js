@@ -17,7 +17,7 @@ export default function Task({ text, desc, id, status }) {
 
   const removeTask = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/task/${id}`, {
+      const response = await fetch(`https://test-w6wx.onrender.com/task/${id}`, {
         method: 'DELETE',
         credentials: 'include'
       });
@@ -36,7 +36,7 @@ export default function Task({ text, desc, id, status }) {
 
   const updateTask = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/task/${id}`, {
+      const response = await fetch(`https://test-w6wx.onrender.com/task/${id}`, {
         method: 'PATCH',
         credentials: 'include',
         body: JSON.stringify({
