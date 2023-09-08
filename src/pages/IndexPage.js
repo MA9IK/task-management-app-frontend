@@ -48,16 +48,20 @@ export default function IndexPage() {
       });
   };
 
-  const updateTaskList = (taskId, updatedTask) => {
+  const updateTaskList = (taskId, updatedTask, method) => {
     const taskToDelete = tasks.find(task => task._id === taskId);
     if (!taskToDelete) {
       console.error(`Task with ID ${taskId} not found.`);
       return;
     }
+    if (method === 'delete') {
+      const updatedTasks = tasks.filter(task => task._id !== taskId);
+      return setTasks(updatedTasks)
+    } else {
+      const updatedTasks = tasks.filter(task => task._id !== taskId);
+      return setTasks(prev => [...prev, updatedTasks]);
+    }
 
-    const updatedTasks = tasks.filter(task => task._id !== taskId);
-
-    setTasks(prev => [...prev, updatedTasks]);
   };
 
   const taskStatuses = ['to-do', 'in-progress', 'completed'];

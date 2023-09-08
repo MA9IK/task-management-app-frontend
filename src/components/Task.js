@@ -27,7 +27,7 @@ export default function Task({ task, updateTaskList }) {
         console.log('Task deleted successfully.');
         handleClose();
 
-        updateTaskList(task._id, null);
+        updateTaskList(task._id, null, 'delete');
       } else {
         console.error('Failed to delete task.');
       }
@@ -65,7 +65,7 @@ export default function Task({ task, updateTaskList }) {
           status: newStatus
         };
 
-        updateTaskList(task._id, updatedTask);
+        updateTaskList(task._id, updatedTask, 'update');
       } else {
         console.error('Failed to update task.');
       }
