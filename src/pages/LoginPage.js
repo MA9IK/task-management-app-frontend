@@ -51,7 +51,10 @@ export default function LoginPage() {
 
   useEffect(() => {
     fetch('https://test-w6wx.onrender.com/users/profile', {
-      credentials: 'include'
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      }
     })
       .then(data => data.json())
       .then(data => {

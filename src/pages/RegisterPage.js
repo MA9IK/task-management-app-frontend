@@ -71,7 +71,10 @@ export default function RegisterPage() {
 
   useEffect(() => {
     fetch('https://test-w6wx.onrender.com/users/profile', {
-      credentials: 'include'
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      }
     })
       .then(data => data.json())
       .then(data => {
@@ -205,7 +208,8 @@ export default function RegisterPage() {
 
                   <div className='mt-3'>
                     <p className='mb-0 text-center'>
-                      Already have an account? <Link to='/users/login'>Login</Link>
+                      Already have an account?{' '}
+                      <Link to='/users/login'>Login</Link>
                     </p>
                   </div>
                 </div>
