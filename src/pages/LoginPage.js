@@ -50,7 +50,7 @@ export default function LoginPage() {
   });
 
   useEffect(() => {
-    fetch('https://test-w6wx.onrender.com/profile', {
+    fetch('https://test-w6wx.onrender.com/users/profile', {
       credentials: 'include'
     })
       .then(data => data.json())
