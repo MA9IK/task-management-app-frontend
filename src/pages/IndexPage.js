@@ -48,11 +48,6 @@ export default function IndexPage() {
       });
   };
 
-  useEffect(() => {
-    fetchUserProfile();
-    fetchTasks();
-  }, [navigate]);
-
   const updateTaskList = (taskId, updatedTask) => {
     const taskToDelete = tasks.find(task => task._id === taskId);
     if (!taskToDelete) {
@@ -61,12 +56,16 @@ export default function IndexPage() {
     }
 
     const updatedTasks = tasks.filter(task => task._id !== taskId);
-    setTasks(updatedTasks);
 
+    setTasks(prev => [...prev, updatedTasks]);
   };
 
   const taskStatuses = ['to-do', 'in-progress', 'completed'];
 
+  useEffect(() => {
+    fetchUserProfile();
+    fetchTasks();
+  }, [navigate]);
   return (
     <Container>
       {user && (
