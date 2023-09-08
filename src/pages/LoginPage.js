@@ -58,7 +58,7 @@ export default function LoginPage() {
         if (data.auth === true) {
           navigate('/');
         } else {
-          navigate('/login');
+          navigate('/users/login');
         }
       })
       .catch(err => {

@@ -78,7 +78,7 @@ export default function RegisterPage() {
         if (data.auth === true) {
           navigate('/');
         } else {
-          navigate('/register');
+          navigate('/users/register');
         }
       })
       .catch(err => {

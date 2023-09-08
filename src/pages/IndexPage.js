@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Alert, Button, Col, Container, Row } from 'react-bootstrap';
+import { Button, Col, Container, Row } from 'react-bootstrap';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import { UserContext } from '../UserContext';
@@ -29,7 +29,7 @@ export default function IndexPage() {
           navigate('/');
           setUser(data.decoded.user);
         } else {
-          navigate('/register');
+          navigate('/users/register');
         }
       })
       .catch(err => {
