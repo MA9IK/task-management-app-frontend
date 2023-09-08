@@ -141,11 +141,7 @@ export default function LoginPage() {
                   <div className='mt-3'>
                     <p className='mb-0  text-center'>
                       Don't have an account?{' '}
-                      <Link to={'/register'}>Register</Link>
-                    </p>
-                    <p className='mb-0  text-center'>
-                      Forgot your password?{' '}
-                      <Link to={'/verifycode'}>Reset</Link>
+                      <Link to={'/users/register'}>Register</Link>
                     </p>
                   </div>
                 </div>

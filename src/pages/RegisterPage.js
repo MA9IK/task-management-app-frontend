@@ -205,7 +205,7 @@ export default function RegisterPage() {
 
                   <div className='mt-3'>
                     <p className='mb-0 text-center'>
-                      Already have an account? <Link to='/login'>Login</Link>
+                      Already have an account? <Link to='/users/login'>Login</Link>
                     </p>
                   </div>
                 </div>

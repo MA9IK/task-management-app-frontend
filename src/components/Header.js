@@ -16,7 +16,7 @@ export default function Header() {
     );
 
     if (response.status === 200) {
-      navigate('/register');
+      navigate('/users/register');
       setUser(null);
     }
   };
