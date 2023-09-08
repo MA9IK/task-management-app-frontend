@@ -54,14 +54,15 @@ export default function IndexPage() {
   }, [navigate]);
 
   const updateTaskList = (taskId, updatedTask) => {
-    const updatedTasks = tasks.map(task => {
-      if (task._id === taskId) {
-        return updatedTask;
-      }
-      return task;
-    });
+    const taskToDelete = tasks.find(task => task._id === taskId);
+    if (!taskToDelete) {
+      console.error(`Task with ID ${taskId} not found.`);
+      return;
+    }
 
+    const updatedTasks = tasks.filter(task => task._id !== taskId);
     setTasks(updatedTasks);
+
   };
 
   const taskStatuses = ['to-do', 'in-progress', 'completed'];

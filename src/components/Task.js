@@ -79,7 +79,7 @@ export default function Task({ task, updateTaskList }) {
       <div
         className=' w-100 border mt-1 rounded-1 shadow-sm text-break task'
         onClick={handleShow}>
-        {task.text}
+        {newText}
       </div>
 
       <Offcanvas show={show} onHide={handleClose}>
