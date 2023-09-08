@@ -12,7 +12,7 @@ export const ModalWindow = ({ show, onHide, head }) => {
 
   const createTask = async () => {
     try {
-      const response = await fetch('https://test-w6wx.onrender.com/task', {
+      const response = await fetch('https://test-w6wx.onrender.com/tasks', {
         credentials: 'include',
         method: 'POST',
         headers: {
@@ -25,10 +25,10 @@ export const ModalWindow = ({ show, onHide, head }) => {
         })
       });
       if (response.status === 200) {
-        window.location.reload()
+        window.location.reload();
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   };
 
@@ -37,12 +37,9 @@ export const ModalWindow = ({ show, onHide, head }) => {
       show={show}
       size='lg'
       aria-labelledby='contained-modal-title-vcenter'
-      centered
-    >
+      centered>
       <Modal.Header>
-        <Modal.Title id='contained-modal-title-vcenter'>
-          {head}
-        </Modal.Title>
+        <Modal.Title id='contained-modal-title-vcenter'>{head}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Row className='d-flex justify-content-center'>
@@ -52,7 +49,7 @@ export const ModalWindow = ({ show, onHide, head }) => {
             placeholder='Title'
             style={{ width: '95%' }}
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={e => setTitle(e.target.value)}
           />
         </Row>
         <Row className='mt-1 d-flex justify-content-center'>
@@ -62,19 +59,27 @@ export const ModalWindow = ({ show, onHide, head }) => {
             placeholder='Description'
             style={{ width: '95%' }}
             value={desc}
-            onChange={(e) => setDesc(e.target.value)}
+            onChange={e => setDesc(e.target.value)}
           />
         </Row>
         <Row className='mt-1'>
           <DropdownButton id='dropdown-basic-button' title={status}>
-            <Dropdown.Item onClick={(e) => setStatus(e.target.innerText)}>to-do</Dropdown.Item>
-            <Dropdown.Item onClick={(e) => setStatus(e.target.innerText)}>in-progress</Dropdown.Item>
-            <Dropdown.Item onClick={(e) => setStatus(e.target.innerText)}>completed</Dropdown.Item>
+            <Dropdown.Item onClick={e => setStatus(e.target.innerText)}>
+              to-do
+            </Dropdown.Item>
+            <Dropdown.Item onClick={e => setStatus(e.target.innerText)}>
+              in-progress
+            </Dropdown.Item>
+            <Dropdown.Item onClick={e => setStatus(e.target.innerText)}>
+              completed
+            </Dropdown.Item>
           </DropdownButton>
         </Row>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant='success' onClick={createTask}>createTask</Button>
+        <Button variant='success' onClick={createTask}>
+          createTask
+        </Button>
         <Button onClick={onHide}>Close</Button>
       </Modal.Footer>
     </Modal>

@@ -1,14 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Button, Row, Container, Card, Form, Alert } from 'react-bootstrap';
+import {
+  Col,
+  Button,
+  Row,
+  Container,
+  Card,
+  Form,
+  Alert
+} from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 
 const schema = yup.object().shape({
-  username: yup.string().required('Username is required').min(3, 'Username must be at least 3 characters').max(15, 'Username cannot be most than 15 characters'),
-  email: yup.string().required('Email is required').email('Invalid email format'),
-  password: yup.string().required('Password is required').min(6, 'Password must be at least 6 characters'),
-  repeatPass: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match')
+  username: yup
+    .string()
+    .required('Username is required')
+    .min(3, 'Username must be at least 3 characters')
+    .max(15, 'Username cannot be most than 15 characters'),
+  email: yup
+    .string()
+    .required('Email is required')
+    .email('Invalid email format'),
+  password: yup
+    .string()
+    .required('Password is required')
+    .min(6, 'Password must be at least 6 characters'),
+  repeatPass: yup
+    .string()
+    .oneOf([yup.ref('password'), null], 'Passwords must match')
 });
 
 export default function RegisterPage() {
@@ -22,16 +42,19 @@ export default function RegisterPage() {
     repeatPass: ''
   };
 
-  const register = async (values) => {
+  const register = async values => {
     try {
-      const response = await fetch('https://test-w6wx.onrender.com/register', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(values)
-      });
+      const response = await fetch(
+        'https://test-w6wx.onrender.com/users/register',
+        {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(values)
+        }
+      );
 
       if (response.status === 200) {
         navigate('/');
@@ -41,14 +64,15 @@ export default function RegisterPage() {
           setErrors(data.errors);
         }
       }
-
     } catch (error) {
       console.error(error);
     }
   };
 
   useEffect(() => {
-    fetch('https://test-w6wx.onrender.com/profile', { credentials: 'include' })
+    fetch('https://test-w6wx.onrender.com/users/profile', {
+      credentials: 'include'
+    })
       .then(data => data.json())
       .then(data => {
         if (data.auth === true) {
@@ -56,11 +80,11 @@ export default function RegisterPage() {
         } else {
           navigate('/register');
         }
-      }).catch(err => {
-      console.log(err);
-    });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }, [navigate]);
-
 
   return (
     <Container>
@@ -70,22 +94,27 @@ export default function RegisterPage() {
           <Card className='shadow px-4'>
             <Card.Body>
               <div>
-                <h2 className='fw-bold mb-2 text-center text-uppercase'>Register</h2>
+                <h2 className='fw-bold mb-2 text-center text-uppercase'>
+                  Register
+                </h2>
                 <div className='mb-3'>
                   <Formik
                     initialValues={initialValues}
-                    onSubmit={(values) => register(values)}
-                    validationSchema={schema}
-                  >
-                    {(formik) => (
+                    onSubmit={values => register(values)}
+                    validationSchema={schema}>
+                    {formik => (
                       <Form noValidate onSubmit={formik.handleSubmit}>
                         <Form.Group className='mb-3' controlId='username'>
-                          <Form.Label className='text-center'>Username</Form.Label>
+                          <Form.Label className='text-center'>
+                            Username
+                          </Form.Label>
                           <Field
                             type='text'
                             name='username'
                             className={`form-control ${
-                              formik.touched.username && formik.errors.username ? 'is-invalid' : ''
+                              formik.touched.username && formik.errors.username
+                                ? 'is-invalid'
+                                : ''
                             }`}
                             placeholder='Username'
                           />
@@ -97,12 +126,16 @@ export default function RegisterPage() {
                         </Form.Group>
 
                         <Form.Group className='mb-3' controlId='email'>
-                          <Form.Label className='text-center'>Email address</Form.Label>
+                          <Form.Label className='text-center'>
+                            Email address
+                          </Form.Label>
                           <Field
                             type='email'
                             name='email'
                             className={`form-control ${
-                              formik.touched.email && formik.errors.email ? 'is-invalid' : ''
+                              formik.touched.email && formik.errors.email
+                                ? 'is-invalid'
+                                : ''
                             }`}
                             placeholder='Email'
                           />
@@ -119,7 +152,9 @@ export default function RegisterPage() {
                             type='password'
                             name='password'
                             className={`form-control ${
-                              formik.touched.password && formik.errors.password ? 'is-invalid' : ''
+                              formik.touched.password && formik.errors.password
+                                ? 'is-invalid'
+                                : ''
                             }`}
                             placeholder='Password'
                           />
@@ -136,7 +171,10 @@ export default function RegisterPage() {
                             type='password'
                             name='repeatPass'
                             className={`form-control ${
-                              formik.touched.repeatPass && formik.errors.repeatPass ? 'is-invalid' : ''
+                              formik.touched.repeatPass &&
+                              formik.errors.repeatPass
+                                ? 'is-invalid'
+                                : ''
                             }`}
                             placeholder='Repeat password'
                           />
@@ -156,16 +194,14 @@ export default function RegisterPage() {
                     )}
                   </Formik>
 
-                  {errors.length > 0 && (
+                  {errors.length > 0 &&
                     errors.map((error, index) => (
                       <Alert variant='danger' className='mt-3'>
                         <p key={index} className='mb-0'>
                           {error}
                         </p>
                       </Alert>
-                    ))
-                  )}
-
+                    ))}
 
                   <div className='mt-3'>
                     <p className='mb-0 text-center'>

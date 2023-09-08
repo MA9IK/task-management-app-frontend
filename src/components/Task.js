@@ -11,21 +11,24 @@ export default function Task({ text, desc, id, status }) {
   const [newText, setNewText] = useState(text);
   const [newDesc, setNewDesc] = useState(desc);
   const [newStatus, setNewStatus] = useState(status);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const removeTask = async () => {
     try {
-      const response = await fetch(`https://test-w6wx.onrender.com/task/${id}`, {
-        method: 'DELETE',
-        credentials: 'include'
-      });
+      const response = await fetch(
+        `https://test-w6wx.onrender.com/tasks/${id}`,
+        {
+          method: 'DELETE',
+          credentials: 'include'
+        }
+      );
 
       if (response.status === 200) {
         console.log('Task deleted successfully.');
-        handleClose()
-        window.location.reload()
+        handleClose();
+        window.location.reload();
       } else {
         console.error('Failed to delete task.');
       }
@@ -35,23 +38,26 @@ export default function Task({ text, desc, id, status }) {
   };
   const updateTask = async () => {
     try {
-      const response = await fetch(`https://test-w6wx.onrender.com/task/${id}`, {
-        method: 'PATCH',
-        credentials: 'include',
-        body: JSON.stringify({
-          title: newText,
-          detail: newDesc,
-          status: newStatus
-        }),
-        headers: {
-          'Content-Type': 'application/json'
+      const response = await fetch(
+        `https://test-w6wx.onrender.com/tasks/${id}`,
+        {
+          method: 'PATCH',
+          credentials: 'include',
+          body: JSON.stringify({
+            title: newText,
+            detail: newDesc,
+            status: newStatus
+          }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
         }
-      });
+      );
 
       if (response.status === 200) {
         console.log('Task updated successfully.');
-        handleClose()
-        window.location.reload()
+        handleClose();
+        window.location.reload();
       } else {
         console.error('Failed to update task.');
       }
@@ -80,7 +86,7 @@ export default function Task({ text, desc, id, status }) {
             type='text'
             placeholder='Description'
             value={newText}
-            onChange={(e) => {
+            onChange={e => {
               setNewText(e.target.value);
             }}
             className='mb-4'
@@ -92,14 +98,23 @@ export default function Task({ text, desc, id, status }) {
             type='text'
             placeholder='Description'
             value={newDesc}
-            onChange={(e) => {
+            onChange={e => {
               setNewDesc(e.target.value);
             }}
           />
-          <DropdownButton id='dropdown-basic-button' title={newStatus || 'Choose status'} className='mt-2'>
-            <Dropdown.Item onClick={(e) => setNewStatus('to-do')}>to-do</Dropdown.Item>
-            <Dropdown.Item onClick={(e) => setNewStatus('in-progress')}>in-progress</Dropdown.Item>
-            <Dropdown.Item onClick={(e) => setNewStatus('completed')}>completed</Dropdown.Item>
+          <DropdownButton
+            id='dropdown-basic-button'
+            title={newStatus || 'Choose status'}
+            className='mt-2'>
+            <Dropdown.Item onClick={e => setNewStatus('to-do')}>
+              to-do
+            </Dropdown.Item>
+            <Dropdown.Item onClick={e => setNewStatus('in-progress')}>
+              in-progress
+            </Dropdown.Item>
+            <Dropdown.Item onClick={e => setNewStatus('completed')}>
+              completed
+            </Dropdown.Item>
           </DropdownButton>
           <Button variant='success' className='mt-3' onClick={updateTask}>
             Submit
@@ -107,7 +122,6 @@ export default function Task({ text, desc, id, status }) {
           <Button variant='danger' className='mt-3 ms-5' onClick={removeTask}>
             Delete task
           </Button>
-
         </Offcanvas.Body>
       </Offcanvas>
     </>

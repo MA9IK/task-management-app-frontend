@@ -7,21 +7,23 @@ import * as yup from 'yup';
 export default function LoginPage() {
   const [remember, setRemember] = useState(false);
   const navigate = useNavigate();
-
-  const login = async (values) => {
+  const login = async values => {
     try {
-      const response = await fetch('https://test-w6wx.onrender.com/login', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: values.email,
-          password: values.password,
-          remember: remember
-        })
-      });
+      const response = await fetch(
+        'https://test-w6wx.onrender.com/users/login',
+        {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email: values.email,
+            password: values.password,
+            remember: remember
+          })
+        }
+      );
 
       if (response.status === 200) {
         navigate('/');
@@ -31,8 +33,26 @@ export default function LoginPage() {
     }
   };
 
+  const initialValues = {
+    email: '',
+    password: ''
+  };
+
+  const schema = yup.object().shape({
+    email: yup
+      .string()
+      .required('Email is required')
+      .email('Invalid email format'),
+    password: yup
+      .string()
+      .required('Password is required')
+      .min(6, 'Password must be at least 6 characters')
+  });
+
   useEffect(() => {
-    fetch('https://test-w6wx.onrender.com/profile', { credentials: 'include' })
+    fetch('https://test-w6wx.onrender.com/profile', {
+      credentials: 'include'
+    })
       .then(data => data.json())
       .then(data => {
         if (data.auth === true) {
@@ -40,21 +60,11 @@ export default function LoginPage() {
         } else {
           navigate('/login');
         }
-      }).catch(err => {
-      console.log(err);
-    });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }, [navigate]);
-
-
-  const initialValues = {
-    email: '',
-    password: ''
-  };
-
-  const schema = yup.object().shape({
-    email: yup.string().required('Email is required').email('Invalid email format'),
-    password: yup.string().required('Password is required').min(6, 'Password must be at least 6 characters')
-  });
 
   return (
     <Container>
@@ -64,22 +74,27 @@ export default function LoginPage() {
           <Card className='shadow px-4'>
             <Card.Body>
               <div>
-                <h2 className='fw-bold mb-2 text-center text-uppercase'>Login</h2>
+                <h2 className='fw-bold mb-2 text-center text-uppercase'>
+                  Login
+                </h2>
                 <div className='mb-3'>
                   <Formik
                     initialValues={initialValues}
                     onSubmit={values => login(values)}
-                    validationSchema={schema}
-                  >
-                    {(formik) => (
+                    validationSchema={schema}>
+                    {formik => (
                       <Form noValidate onSubmit={formik.handleSubmit}>
                         <Form.Group className='mb-3' controlId='email'>
-                          <Form.Label className='text-center'>Email address</Form.Label>
+                          <Form.Label className='text-center'>
+                            Email address
+                          </Form.Label>
                           <Field
                             type='text'
                             name='email'
                             className={`form-control ${
-                              formik.touched.email && formik.errors.email ? 'is-invalid' : ''
+                              formik.touched.email && formik.errors.email
+                                ? 'is-invalid'
+                                : ''
                             }`}
                             placeholder='Email'
                           />
@@ -90,12 +105,16 @@ export default function LoginPage() {
                           />
                         </Form.Group>
                         <Form.Group className='mb-3' controlId='password'>
-                          <Form.Label className='text-center'>Password</Form.Label>
+                          <Form.Label className='text-center'>
+                            Password
+                          </Form.Label>
                           <Field
                             type='password'
                             name='password'
                             className={`form-control ${
-                              formik.touched.password && formik.errors.password ? 'is-invalid' : ''
+                              formik.touched.password && formik.errors.password
+                                ? 'is-invalid'
+                                : ''
                             }`}
                             placeholder='Password'
                           />
@@ -123,6 +142,10 @@ export default function LoginPage() {
                     <p className='mb-0  text-center'>
                       Don't have an account?{' '}
                       <Link to={'/register'}>Register</Link>
+                    </p>
+                    <p className='mb-0  text-center'>
+                      Forgot your password?{' '}
+                      <Link to={'/verifycode'}>Reset</Link>
                     </p>
                   </div>
                 </div>
