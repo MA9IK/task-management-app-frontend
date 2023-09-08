@@ -61,7 +61,7 @@ export default function LoginPage() {
         if (data.auth === true) {
           navigate('/');
         } else {
-          navigate('/users/login');
+          navigate('/login');
         }
       })
       .catch(err => {
@@ -144,7 +144,7 @@ export default function LoginPage() {
                   <div className='mt-3'>
                     <p className='mb-0  text-center'>
                       Don't have an account?{' '}
-                      <Link to={'/users/register'}>Register</Link>
+                      <Link to={'/register'}>Register</Link>
                     </p>
                   </div>
                 </div>

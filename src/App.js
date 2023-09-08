@@ -9,8 +9,8 @@ function App() {
     <UserContextProvider>
       <Routes>
         <Route path='/' element={<IndexPage />} />
-        <Route path='/users/register' element={<RegisterPage />} />
-        <Route path='/users/login' element={<LoginPage />} />
+        <Route path='/register' element={<RegisterPage />} />
+        <Route path='/login' element={<LoginPage />} />
       </Routes>
     </UserContextProvider>
   );

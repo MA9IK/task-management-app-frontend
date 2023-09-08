@@ -81,7 +81,7 @@ export default function RegisterPage() {
         if (data.auth === true) {
           navigate('/');
         } else {
-          navigate('/users/register');
+          navigate('/register');
         }
       })
       .catch(err => {
@@ -209,7 +209,7 @@ export default function RegisterPage() {
                   <div className='mt-3'>
                     <p className='mb-0 text-center'>
                       Already have an account?{' '}
-                      <Link to='/users/login'>Login</Link>
+                      <Link to='/login'>Login</Link>
                     </p>
                   </div>
                 </div>

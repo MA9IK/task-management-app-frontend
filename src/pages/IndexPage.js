@@ -29,7 +29,7 @@ export default function IndexPage() {
           navigate('/');
           setUser(data.decoded.user);
         } else {
-          navigate('/users/register');
+          navigate('/register');
         }
       })
       .catch(err => {
