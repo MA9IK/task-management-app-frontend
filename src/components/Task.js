@@ -4,21 +4,19 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-import { useNavigate } from 'react-router-dom';
 
-export default function Task({ text, desc, id, status }) {
+export default function Task({ task, updateTaskList }) {
   const [show, setShow] = useState(false);
-  const [newText, setNewText] = useState(text);
-  const [newDesc, setNewDesc] = useState(desc);
-  const [newStatus, setNewStatus] = useState(status);
-  const navigate = useNavigate();
+  const [newText, setNewText] = useState(task.title);
+  const [newDesc, setNewDesc] = useState(task.detail);
+  const [newStatus, setNewStatus] = useState(task.status);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const removeTask = async () => {
     try {
       const response = await fetch(
-        `https://test-w6wx.onrender.com/tasks/${id}`,
+        `https://test-w6wx.onrender.com/tasks/${task._id}`,
         {
           method: 'DELETE',
           credentials: 'include'
@@ -28,7 +26,8 @@ export default function Task({ text, desc, id, status }) {
       if (response.status === 200) {
         console.log('Task deleted successfully.');
         handleClose();
-        window.location.reload();
+
+        updateTaskList(task._id, null);
       } else {
         console.error('Failed to delete task.');
       }
@@ -36,10 +35,11 @@ export default function Task({ text, desc, id, status }) {
       console.error('Error:', error);
     }
   };
+
   const updateTask = async () => {
     try {
       const response = await fetch(
-        `https://test-w6wx.onrender.com/tasks/${id}`,
+        `https://test-w6wx.onrender.com/tasks/${task._id}`,
         {
           method: 'PATCH',
           credentials: 'include',
@@ -57,7 +57,15 @@ export default function Task({ text, desc, id, status }) {
       if (response.status === 200) {
         console.log('Task updated successfully.');
         handleClose();
-        window.location.reload();
+
+        const updatedTask = {
+          ...task,
+          title: newText,
+          detail: newDesc,
+          status: newStatus
+        };
+
+        updateTaskList(task._id, updatedTask);
       } else {
         console.error('Failed to update task.');
       }
@@ -71,7 +79,7 @@ export default function Task({ text, desc, id, status }) {
       <div
         className=' w-100 border mt-1 rounded-1 shadow-sm text-break task'
         onClick={handleShow}>
-        {text}
+        {task.text}
       </div>
 
       <Offcanvas show={show} onHide={handleClose}>

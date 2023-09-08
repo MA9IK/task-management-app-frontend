@@ -1,29 +1,22 @@
+import React, { useEffect, useState } from 'react';
 import { Col, Button, Row, Container, Card, Form } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import React, { useEffect, useState } from 'react';
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 
 export default function LoginPage() {
   const [remember, setRemember] = useState(false);
   const navigate = useNavigate();
-  const login = async values => {
+  const login = async (values) => {
     try {
-      const response = await fetch(
-        'https://test-w6wx.onrender.com/users/login',
-        {
-          method: 'POST',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            email: values.email,
-            password: values.password,
-            remember: remember
-          })
-        }
-      );
+      const response = await fetch('https://test-w6wx.onrender.com/users/login', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      });
 
       if (response.status === 200) {
         navigate('/');
@@ -35,7 +28,8 @@ export default function LoginPage() {
 
   const initialValues = {
     email: '',
-    password: ''
+    password: '',
+    remember: false
   };
 
   const schema = yup.object().shape({
@@ -134,9 +128,11 @@ export default function LoginPage() {
                         </div>
                         <Form.Check
                           className='d-flex gap-1 align-items-center mt-1'
-                          type={'checkbox'}
-                          label={`remember me for 2 weeks`}
-                          onChange={() => setRemember(!remember)}
+                          type='checkbox'
+                          label={`Remember me for 2 weeks`}
+                          name='remember'
+                          checked={formik.values.remember}
+                          onChange={formik.handleChange}
                         />
                       </Form>
                     )}
